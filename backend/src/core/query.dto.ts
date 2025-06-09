@@ -1,16 +1,21 @@
+import { IsNumber, IsOptional, Min, Max } from 'class-validator';
 import { Type } from 'class-transformer';
-import { IsInt, IsOptional, Min } from 'class-validator';
 
-export class QueryDto<T extends object = any> {
+export class QueryDto {
   @IsOptional()
   @Type(() => Number)
-  @IsInt()
+  @IsNumber()
   @Min(1)
-  page?: number;
+  page: number = 1;
 
   @IsOptional()
   @Type(() => Number)
-  @IsInt()
+  @IsNumber()
   @Min(1)
-  pageSize?: number;
+  @Max(250)
+  limit: number = 25;
+
+  get offset(): number {
+    return (this.page - 1) * this.limit;
+  }
 }
