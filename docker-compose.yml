@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-      POSTGRES_DB: products
+      POSTGRES_DB: product
     ports:
       - "5432:5432"
     volumes:
@@ -18,7 +18,7 @@ services:
     working_dir: /app
     volumes:
       - ./backend:/app
-    command: sh -c "npm install && npm run start:dev"
+    command: sh -c "yarn install && yarn run start:dev"
     ports:
       - "3001:3001"
     environment:
@@ -32,7 +32,7 @@ services:
     working_dir: /app
     volumes:
       - ./frontend:/app
-    command: sh -c "npm install && npm run dev"
+    command: sh -c "yarn install && yarn run dev"
     ports:
       - "3000:3000"
     depends_on:
