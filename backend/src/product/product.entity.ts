@@ -1,4 +1,11 @@
-import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import {
+  Collection,
+  Entity,
+  ManyToMany,
+  PrimaryKey,
+  Property,
+} from '@mikro-orm/core';
+import { Order } from 'src/order/order.entity';
 
 @Entity()
 export class Product {
@@ -10,6 +17,9 @@ export class Product {
 
   @Property()
   category: string;
+
+  @ManyToMany(() => Order, undefined, { mappedBy: 'products' })
+  orders = new Collection<Order>(this);
 
   @Property()
   status: boolean;
