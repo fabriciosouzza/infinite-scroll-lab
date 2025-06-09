@@ -16,14 +16,16 @@ export class PaginationService {
     queryDto: QueryDto,
     findOptions: FindOptions<T, P> = {},
   ): Promise<PaginatedResult<Loaded<T, P>>> {
-    const { limit, offset } = queryDto;
+    const { page_size, page } = queryDto;
 
-    findOptions.limit = limit;
+    const offset = (page - 1) * page_size;
+
+    findOptions.limit = page_size;
     findOptions.offset = offset;
 
     const [data, total] = await em.findAndCount(entityName, {}, findOptions);
 
-    return this.paginate(data, total, limit, offset);
+    return this.paginate(data, total, page_size, offset);
   }
 
   private paginate<T>(
@@ -40,7 +42,7 @@ export class PaginationService {
       data: data,
       meta: {
         page: currentPage,
-        perPage: limit,
+        perPage: Number(limit),
         hasNextPage: hasNextPage,
         totalPages: totalPages,
         totalItems: total,

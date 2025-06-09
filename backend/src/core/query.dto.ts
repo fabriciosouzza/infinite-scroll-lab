@@ -13,9 +13,5 @@ export class QueryDto {
   @IsNumber()
   @Min(1)
   @Max(250)
-  limit: number = 25;
-
-  get offset(): number {
-    return (this.page - 1) * this.limit;
-  }
+  page_size: number = 25;
 }
