@@ -10,7 +10,7 @@ const config: Options<PostgreSqlDriver> = {
   port: 5432,
   user: 'root',
   password: 'root',
-  dbName: 'product',
+  dbName: 'nest-lab',
 
   entities: ['./dist/**/*.entity.js'],
   entitiesTs: ['./src/**/*.entity.ts'],

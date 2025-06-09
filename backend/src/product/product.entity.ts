@@ -9,6 +9,9 @@ export class Product {
   name: string;
 
   @Property()
+  category: string;
+
+  @Property()
   status: boolean;
 
   constructor(name: string, status: boolean) {
