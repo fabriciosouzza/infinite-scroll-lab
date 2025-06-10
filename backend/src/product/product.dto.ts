@@ -7,7 +7,7 @@ export class ProductDto {
 
   @IsString()
   @IsNotEmpty()
-  category!: string;
+  description!: string;
 
   @IsBoolean()
   @IsOptional()

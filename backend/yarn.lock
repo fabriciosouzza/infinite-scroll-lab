@@ -409,6 +409,11 @@
     "@eslint/core" "^0.14.0"
     levn "^0.4.1"
 
+"@faker-js/faker@^9.8.0":
+  version "9.8.0"
+  resolved "https://registry.yarnpkg.com/@faker-js/faker/-/faker-9.8.0.tgz#3344284028d1c9dc98dee2479f82939310370d88"
+  integrity sha512-U9wpuSrJC93jZBxx/Qq2wPjCuYISBueyVUGK7qqdmj7r/nxaxwW8AQDCLeRO7wZnjj94sh3p246cAYjUKuqgfg==
+
 "@humanfs/core@^0.19.1":
   version "0.19.1"
   resolved "https://registry.npmjs.org/@humanfs/core/-/core-0.19.1.tgz"
@@ -933,6 +938,14 @@
     postgres-array "3.0.4"
     postgres-date "2.1.0"
     postgres-interval "4.0.2"
+
+"@mikro-orm/seeder@^6.4.16":
+  version "6.4.16"
+  resolved "https://registry.yarnpkg.com/@mikro-orm/seeder/-/seeder-6.4.16.tgz#fc0877207373e76c8434255117d3cedf370b8e35"
+  integrity sha512-5wE8gvZZYhD7N9eGsgGfK+/oe74mCgixZaE4ClSo7xUSL6fJTpzctAU6sr4NTHo3QclNTxtiI5syJD2VByWQhg==
+  dependencies:
+    fs-extra "11.3.0"
+    globby "11.1.0"
 
 "@napi-rs/nice-android-arm-eabi@1.0.1":
   version "1.0.1"

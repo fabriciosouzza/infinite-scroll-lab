@@ -16,7 +16,7 @@ export class Product {
   name: string;
 
   @Property()
-  category: string;
+  description: string;
 
   @ManyToMany(() => Order, undefined, { mappedBy: 'products' })
   orders = new Collection<Order>(this);
@@ -24,9 +24,9 @@ export class Product {
   @Property()
   status: boolean;
 
-  constructor(name: string, category: string, status: boolean) {
+  constructor(name: string, description: string, status: boolean) {
     this.name = name;
     this.status = status;
-    this.category = category;
+    this.description = description;
   }
 }

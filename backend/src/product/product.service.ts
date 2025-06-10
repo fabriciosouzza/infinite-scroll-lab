@@ -25,7 +25,7 @@ export class ProductService {
   }
 
   async create(dto: ProductDto): Promise<Product> {
-    const product = new Product(dto.name, dto.category, dto.status);
+    const product = new Product(dto.name, dto.description, dto.status);
     await this.em.persist(product).flush();
     return product;
   }

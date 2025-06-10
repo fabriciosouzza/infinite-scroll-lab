@@ -84,8 +84,8 @@
           "length": 255,
           "mappedType": "string"
         },
-        "category": {
-          "name": "category",
+        "description": {
+          "name": "description",
           "type": "varchar(255)",
           "unsigned": false,
           "autoincrement": false,

@@ -18,6 +18,13 @@ const config: Options<PostgreSqlDriver> = {
   extensions: [EntityGenerator, Migrator],
   loadStrategy: LoadStrategy.JOINED,
   debug: true,
+  seeder: {
+    path: './src/seeders',
+    pathTs: './src/seeders',
+    defaultSeeder: 'DatabaseSeeder',
+    glob: '!(*.d).{js,ts}',
+    emit: 'ts',
+  },
 };
 
 export default config;
