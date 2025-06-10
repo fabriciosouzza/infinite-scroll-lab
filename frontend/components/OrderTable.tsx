@@ -16,7 +16,7 @@ import { useOrdersInfinite } from "@/hooks/order";
 import { Order, ReviewState } from "@/model/order";
 import React, { useCallback, useMemo, useState } from "react";
 import { TableComponents, TableVirtuoso } from "react-virtuoso";
-import handleReviewBulkUpdate from "@/services/bulkUpdate";
+import ConfirmationModal from "./ConfirmationModal";
 
 export interface ColumnData {
   dataKey: keyof Order;
@@ -45,6 +45,13 @@ const VirtuosoTableComponents: TableComponents<Order> = {
 
 export default function OrderTable() {
   const { orders, loadMore, mutate } = useOrdersInfinite();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reviewStateSelected, setReviewStateSelected] = useState<ReviewState>(
+    ReviewState.PENDING
+  );
+  const handleOpen = () => setIsModalOpen(true);
+  const handleClose = () => setIsModalOpen(false);
+  const handleMutate = () => mutate();
 
   const [selectedOrders, setSelectedOrders] = useState<Order[]>([]);
 
@@ -169,6 +176,7 @@ export default function OrderTable() {
         display: "flex",
         flexDirection: "column",
         gap: "16px",
+        backgroundColor: "#F2f2f2",
       }}
     >
       <Box
@@ -180,7 +188,7 @@ export default function OrderTable() {
           gap: "16px",
         }}
       >
-        <Typography variant="h5">Products to review</Typography>
+        <Typography variant="h5">Orders to review</Typography>
         <TableVirtuoso
           style={{ height: "100%", borderRadius: "8px" }}
           computeItemKey={(idx, order) => order.id}
@@ -203,9 +211,9 @@ export default function OrderTable() {
           variant="outlined"
           size="small"
           sx={{ borderRadius: "8px", paddingX: 1 }}
-          onClick={async () => {
-            await handleReviewBulkUpdate(selectedOrders, ReviewState.REJECTED);
-            mutate();
+          onClick={() => {
+            setReviewStateSelected(ReviewState.REJECTED);
+            handleOpen();
           }}
         >
           Recusar
@@ -214,14 +222,21 @@ export default function OrderTable() {
           variant="contained"
           size="small"
           sx={{ borderRadius: "8px", paddingX: 1 }}
-          onClick={async () => {
-            await handleReviewBulkUpdate(selectedOrders, ReviewState.APPROVED);
-            mutate();
+          onClick={() => {
+            setReviewStateSelected(ReviewState.APPROVED);
+            handleOpen();
           }}
         >
           Aprovar
         </Button>
       </Box>
+      <ConfirmationModal
+        handleClose={handleClose}
+        handleMutate={handleMutate}
+        isModalOpen={isModalOpen}
+        reviewState={reviewStateSelected}
+        selectedOrders={selectedOrders}
+      />
     </Paper>
   );
 }
