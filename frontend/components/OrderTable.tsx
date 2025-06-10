@@ -13,9 +13,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useOrdersInfinite } from "@/hooks/order";
-import { Order } from "@/model/order";
+import { Order, ReviewState } from "@/model/order";
 import React, { useCallback, useMemo, useState } from "react";
 import { TableComponents, TableVirtuoso } from "react-virtuoso";
+import handleReviewBulkUpdate from "@/services/bulkUpdate";
 
 export interface ColumnData {
   dataKey: keyof Order;
@@ -43,17 +44,17 @@ const VirtuosoTableComponents: TableComponents<Order> = {
 };
 
 export default function OrderTable() {
-  const { orders, isLoading, loadMore } = useOrdersInfinite();
+  const { orders, loadMore, mutate } = useOrdersInfinite();
 
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const [selectedOrders, setSelectedOrders] = useState<Order[]>([]);
 
-  function toggleRow(id: number) {
-    setSelectedIds((prev) => {
-      if (prev.includes(id)) {
-        const newArr = prev.filter((x) => x !== id);
+  function toggleRow(toggledOrder: Order) {
+    setSelectedOrders((prev) => {
+      if (prev.some((order) => order.id === toggledOrder.id)) {
+        const newArr = prev.filter((order) => order.id !== toggledOrder.id);
         return newArr;
       } else {
-        const newArr = [...prev, id];
+        const newArr = [...prev, toggledOrder];
         return newArr;
       }
     });
@@ -115,11 +116,11 @@ export default function OrderTable() {
 
   const rowContent = useCallback(
     (_index: number, row: Order) => {
-      const isSelected = selectedIds.includes(row.id);
+      const isSelected = selectedOrders.some((order) => order.id === row.id);
       return (
         <>
           <TableCell padding="checkbox">
-            <Checkbox checked={isSelected} onChange={() => toggleRow(row.id)} />
+            <Checkbox checked={isSelected} onChange={() => toggleRow(row)} />
           </TableCell>
           {columns.map((column) => {
             const dataKey = column.dataKey as keyof Order;
@@ -154,7 +155,7 @@ export default function OrderTable() {
         </>
       );
     },
-    [columns, selectedIds, toggleRow]
+    [columns, selectedOrders, toggleRow]
   );
 
   return (
@@ -202,6 +203,10 @@ export default function OrderTable() {
           variant="outlined"
           size="small"
           sx={{ borderRadius: "8px", paddingX: 1 }}
+          onClick={async () => {
+            await handleReviewBulkUpdate(selectedOrders, ReviewState.REJECTED);
+            mutate();
+          }}
         >
           Recusar
         </Button>
@@ -209,6 +214,10 @@ export default function OrderTable() {
           variant="contained"
           size="small"
           sx={{ borderRadius: "8px", paddingX: 1 }}
+          onClick={async () => {
+            await handleReviewBulkUpdate(selectedOrders, ReviewState.APPROVED);
+            mutate();
+          }}
         >
           Aprovar
         </Button>
