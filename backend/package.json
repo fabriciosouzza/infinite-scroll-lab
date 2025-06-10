@@ -7,6 +7,8 @@
   "license": "UNLICENSED",
   "scripts": {
     "seed": "mikro-orm seeder:run",
+    "migration:create": "mikro-orm migration:create",
+    "migration:up": "mikro-orm migration:up",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
