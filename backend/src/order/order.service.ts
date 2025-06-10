@@ -1,4 +1,4 @@
-import { EntityManager, PopulatePath, wrap } from '@mikro-orm/core';
+import { EntityManager, PopulatePath, QueryOrder, wrap } from '@mikro-orm/core';
 import { ConflictException, Injectable } from '@nestjs/common';
 import { PaginatedResult } from 'src/core/pagination.interface';
 import { PaginationService } from 'src/core/pagination.service';
@@ -18,6 +18,7 @@ export class OrderService {
       ...query,
       options: {
         fields: ['*', 'products'] as unknown as PopulatePath.ALL[],
+        orderBy: { id: QueryOrder.ASC },
       },
     });
   }
