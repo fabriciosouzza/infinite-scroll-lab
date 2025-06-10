@@ -6,7 +6,9 @@ import {
   IsOptional,
   IsArray,
   IsNumber,
+  IsEnum,
 } from 'class-validator';
+import { ReviewState } from './order.entity';
 
 export class OrderDto {
   @IsString()
@@ -20,6 +22,13 @@ export class OrderDto {
   @IsArray()
   @IsNumber({}, { each: true })
   products: number[];
+
+  @IsEnum(ReviewState)
+  @IsNotEmpty()
+  reviewState!:
+    | ReviewState.APPROVED
+    | ReviewState.PENDING
+    | ReviewState.REJECTED;
 
   @IsBoolean()
   @IsOptional()

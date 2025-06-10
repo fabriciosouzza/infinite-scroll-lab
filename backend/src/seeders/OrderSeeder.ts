@@ -2,7 +2,7 @@ import { EntityManager, wrap } from '@mikro-orm/core';
 import { Seeder } from '@mikro-orm/seeder';
 import { faker } from '@faker-js/faker';
 import { Product } from 'src/product/product.entity';
-import { Order } from 'src/order/order.entity';
+import { Order, ReviewState } from 'src/order/order.entity';
 
 export class OrderSeeder extends Seeder {
   async run(em: EntityManager): Promise<void> {
@@ -26,9 +26,15 @@ export class OrderSeeder extends Seeder {
         max: 3,
       });
 
+      const randomReviewState = faker.helpers.arrayElements(
+        [ReviewState.PENDING, ReviewState.APPROVED, ReviewState.REJECTED],
+        { min: 1, max: 1 },
+      );
+
       const order = new Order(
         customerName,
         customerEmail,
+        randomReviewState[0],
         faker.datatype.boolean(),
       );
 

@@ -27,7 +27,12 @@ export class OrderService {
   }
 
   async create(dto: OrderDto): Promise<Order> {
-    const order = new Order(dto.customer_name, dto.customer_email, dto.status);
+    const order = new Order(
+      dto.customer_name,
+      dto.customer_email,
+      dto.reviewState,
+      dto.status,
+    );
 
     const updatedOrder = wrap(order).assign(
       { products: dto.products },

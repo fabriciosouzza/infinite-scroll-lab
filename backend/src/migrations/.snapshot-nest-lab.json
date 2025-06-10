@@ -35,6 +35,20 @@
           "length": 255,
           "mappedType": "string"
         },
+        "review_state": {
+          "name": "review_state",
+          "type": "text",
+          "unsigned": false,
+          "autoincrement": false,
+          "primary": false,
+          "nullable": false,
+          "enumItems": [
+            "A",
+            "R",
+            "P"
+          ],
+          "mappedType": "enum"
+        },
         "status": {
           "name": "status",
           "type": "boolean",
