@@ -24,8 +24,9 @@ export class Product {
   @Property()
   status: boolean;
 
-  constructor(name: string, status: boolean) {
+  constructor(name: string, category: string, status: boolean) {
     this.name = name;
     this.status = status;
+    this.category = category;
   }
 }
