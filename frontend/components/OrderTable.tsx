@@ -17,6 +17,7 @@ import { Order, ReviewState } from "@/model/order";
 import React, { useCallback, useMemo, useState } from "react";
 import { TableComponents, TableVirtuoso } from "react-virtuoso";
 import ConfirmationModal from "./ConfirmationModal";
+import { updateOrder } from "@/services/order";
 
 export interface ColumnData {
   dataKey: keyof Order;
@@ -54,6 +55,8 @@ export default function OrderTable() {
   const handleMutate = () => mutate();
 
   const [selectedOrders, setSelectedOrders] = useState<Order[]>([]);
+  const [editingRowId, setEditingRowId] = useState<number | null>(null);
+  const [editedName, setEditedName] = useState<string>("");
 
   function toggleRow(toggledOrder: Order) {
     setSelectedOrders((prev) => {
@@ -113,6 +116,7 @@ export default function OrderTable() {
             variant="head"
             style={{ width: column.width }}
             sx={{ backgroundColor: "background.paper" }}
+            size="small"
           >
             {column.label}
           </TableCell>
@@ -124,6 +128,17 @@ export default function OrderTable() {
   const rowContent = useCallback(
     (_index: number, row: Order) => {
       const isSelected = selectedOrders.some((order) => order.id === row.id);
+      const isEditing = editingRowId === row.id;
+
+      const handleSave = async () => {
+        row.customer_name = editedName;
+        await updateOrder(row.id, {
+          ...row,
+          products: row.products?.map((product) => product.id),
+        });
+        handleMutate();
+        setEditingRowId(null);
+      };
       return (
         <>
           <TableCell padding="checkbox">
@@ -149,6 +164,38 @@ export default function OrderTable() {
                   cellContent = "Pendente";
                   break;
               }
+            } else if (dataKey === "customer_name") {
+              if (isEditing) {
+                cellContent = (
+                  <input
+                    type="text"
+                    value={editedName}
+                    onChange={(e) => setEditedName(e.target.value)}
+                    onBlur={handleSave}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSave();
+                      } else if (e.key === "Escape") {
+                        setEditingRowId(null);
+                      }
+                    }}
+                    autoFocus
+                    style={{ width: "100%" }}
+                  />
+                );
+              } else {
+                cellContent = (
+                  <Box
+                    onClick={() => {
+                      setEditingRowId(row.id);
+                      setEditedName(row.customer_name);
+                    }}
+                    sx={{ cursor: "pointer" }}
+                  >
+                    {row.customer_name}
+                  </Box>
+                );
+              }
             } else {
               cellContent = row[dataKey] as React.ReactNode;
             }
@@ -162,7 +209,7 @@ export default function OrderTable() {
         </>
       );
     },
-    [columns, selectedOrders, toggleRow]
+    [columns, selectedOrders, toggleRow, editingRowId, editedName]
   );
 
   return (
