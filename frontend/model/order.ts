@@ -7,7 +7,7 @@ export enum ReviewState {
   PENDING = "P",
 }
 
-interface Order {
+export interface Order {
   id: number;
   customer_name: string;
   customer_email: string;
