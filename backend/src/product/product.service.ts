@@ -13,7 +13,7 @@ export class ProductService {
     private readonly paginationService: PaginationService,
   ) {}
 
-  async findAll(query: QueryDto): Promise<PaginatedResult<Product>> {
+  async findAll(query: QueryDto<Product>): Promise<PaginatedResult<Product>> {
     return this.paginationService.findAndPaginate<Product>(
       this.em,
       Product,

@@ -1,7 +1,16 @@
-import { IsNumber, IsOptional, Min, Max } from 'class-validator';
+import { IsNumber, IsObject, IsOptional, Min } from 'class-validator';
 import { Type } from 'class-transformer';
+import { FilterQuery, FindOptions } from '@mikro-orm/core';
 
-export class QueryDto {
+export class QueryDto<T extends object = any> {
+  @IsOptional()
+  @IsObject()
+  where?: FilterQuery<T>;
+
+  @IsOptional()
+  @IsObject()
+  options?: FindOptions<T>;
+
   @IsOptional()
   @Type(() => Number)
   @IsNumber()
@@ -12,6 +21,5 @@ export class QueryDto {
   @Type(() => Number)
   @IsNumber()
   @Min(1)
-  @Max(250)
   page_size: number = 25;
 }
