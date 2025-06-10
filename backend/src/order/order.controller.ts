@@ -21,7 +21,9 @@ export class OrderController {
   constructor(private readonly orderService: OrderService) {}
 
   @Get('orders')
-  async findAll(@Query() query: QueryDto): Promise<PaginatedResult<Order>> {
+  async findAll(
+    @Query() query: QueryDto<Order>,
+  ): Promise<PaginatedResult<Order>> {
     return this.orderService.findAll(query);
   }
 
